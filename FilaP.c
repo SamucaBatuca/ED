@@ -33,18 +33,19 @@ void push (Fila *fi, Tipo val){
             return;
         }
         Tipo aux;
-        fi-> fim++; // ajusta o back
 
         if(fi->qtd == 0){ //para o primeiro a ser add
             fi->qtd++;
             *(fi->f) = val;
+            fi-> fim++; // ajusta o back
         } else { // para os demais casos
             
             for(i = 0; *((fi->f)+ fi->fim-i) >= val && i < fi->tamanho; i++); // roda a fila até achar alguém menor ou igual
-            printf("--%d--\n", i);
+            //printf("--i: %d; tamanho: %d--\n", i, fi->qtd);
 
-            if(i == fi-> tamanho){ // se não achar alguém menor doq ele, é pq ele É o menor 
+            if(i > fi->qtd){ // se não achar alguém menor doq ele, é pq ele É o menor
                 Tipo cont = 0;
+                fi-> fim++;
                 while((fi->fim-cont) > fi->ini ){ // anda até o número encontrado
                     cont++;
                     aux = *((fi->f) + fi->fim - cont);// pega valor da posição anterior
@@ -54,6 +55,7 @@ void push (Fila *fi, Tipo val){
                 fi -> qtd++; // adiciona mais um à quantidade
 
             } else{ // caso exista alguém menor doq ele
+                fi-> fim++; // ajusta o back
                 Tipo cont = 0;
                 while((fi->fim-cont) > fi->fim - i){ // anda até o número encontrado
                     cont++;
@@ -97,12 +99,15 @@ Tipo pop(Fila* fi){
 
 int main() {
     Tipo i;
-    Fila *fi = criaFila(4);
+    Fila *fi = criaFila(10);
 
     push(fi,2);
     push(fi,4);
     push(fi,1);
     push(fi,3);
+    push(fi,5);
+    push(fi,10);
+    push(fi,8);
 
 
     while(fi->qtd != 0){
