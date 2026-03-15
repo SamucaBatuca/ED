@@ -26,7 +26,7 @@ Fila * criaFila(int tam){ // retorna um poteiro do tipo Fila
 
 void push (Fila *fi, Tipo val){
     int i;
-    Tipo cont = 0;
+    
     if (fi!= NULL){ // ve se a Fila existe
         if (fi -> tamanho == fi -> qtd){ // se o tamanho da Filha não estourou
             puts ("Fila cheia");
@@ -37,19 +37,36 @@ void push (Fila *fi, Tipo val){
 
         if(fi->qtd == 0){ //para o primeiro a ser add
             fi->qtd++;
-            fi->fim++;
             *(fi->f) = val;
         } else { // para os demais casos
-            for(i = 0; *((fi->f)+ fi->fim-i) >= val; i++); // roda a fila até achar alguém menor ou igual
-            printf("--%d--", i);
-            while((fi->fim-cont) > fi->fim - i){ // anda até o número encontrado
-                cont++;
-                aux = *((fi->f) + fi->fim - cont);// pega valor da posição anterior
-                *((fi->f) + fi->fim - (cont-1))= aux; // insere a posição anterior no atual
+            
+            for(i = 0; *((fi->f)+ fi->fim-i) >= val && i < fi->tamanho; i++); // roda a fila até achar alguém menor ou igual
+            printf("--%d--\n", i);
+
+            if(i == fi-> tamanho){ // se não achar alguém menor doq ele, é pq ele É o menor 
+                Tipo cont = 0;
+                while((fi->fim-cont) > fi->ini ){ // anda até o número encontrado
+                    cont++;
+                    aux = *((fi->f) + fi->fim - cont);// pega valor da posição anterior
+                    *((fi->f) + fi->fim - (cont-1))= aux; // insere a posição anterior no atual
+                }
+                *(fi->f )= val; // insere o valor no lugar do ultimo valor maior que ela
+                fi -> qtd++; // adiciona mais um à quantidade
+
+            } else{ // caso exista alguém menor doq ele
+                Tipo cont = 0;
+                while((fi->fim-cont) > fi->fim - i){ // anda até o número encontrado
+                    cont++;
+                    aux = *((fi->f) + fi->fim - cont);// pega valor da posição anterior
+                    *((fi->f) + fi->fim - (cont-1))= aux; // insere a posição anterior no atual
+                }
+                *((fi->f) + fi->fim - i)= val; // insere o valor no lugar do ultimo valor maior que ela
+                fi -> qtd++; // adiciona mais um à quantidade
             }
-            *((fi->f) + fi->fim - i)= val; // insere o valor no lugar do ultimo valor maior que ela
-            fi -> qtd++; // adiciona mais um à quantidade
         }
+
+
+            
 
         
     }
@@ -82,9 +99,10 @@ int main() {
     Tipo i;
     Fila *fi = criaFila(4);
 
+    push(fi,2);
+    push(fi,4);
     push(fi,1);
     push(fi,3);
-    push(fi,2);
 
 
     while(fi->qtd != 0){
