@@ -22,17 +22,22 @@ Lista * criaLista(int tam){ // retorna um poteiro do tipo Lista
 }
 
 void pushFront (Lista *li, Tipo val){
-    if (li!= NULL){ // ve se a Fila existe
+   if (li!= NULL){ // ve se a Fila existe
         if (li -> tamanho == li -> qtd){ // se o tamanho da lista não estourou
-            puts ("Lista cheia");
+            puts ("Fila cheia");
             return;
         }
         li -> back++; // o fim da lista anda
-        *((li->l)+ li -> back) = val;
-        /* Isso significa: aponte para o ponteiro do slot de variáveis da
-            Fila somado ao fim (ou seja, aponta pro fim) e insira nele
-            uma variável do tipo anteriormente definido 
-        */
+        Tipo cont = 0;
+        Tipo aux;
+        while((li->back-cont) > (li->front)){
+            cont++;
+            aux = *((li->l) + li->back - cont);// pega valor da posição anterior a back
+            *((li->l) + li->back - (cont-1))= aux; // insere a posição anterior no atual back
+        }
+
+        *(li->l) = val; // atribuindo valor no front
+        
         li -> qtd++; // adiciona mais um à quantidade
     }
     return;
@@ -63,6 +68,8 @@ void pushPosicao(Lista *li, int posi, Tipo val){
             puts ("Lista cheia");
             return;
         }
+        li-> back++; // ajusta o back
+        posi--; // ajusta a posição para a requisitada
         Tipo cont = 0;
         Tipo aux;
         while((li->back-cont) > posi){ // enquanto não chega na posição
@@ -122,6 +129,7 @@ Tipo popPosicao(Lista* li, int posi){
     Tipo e; // informação a ser retornada
     if(li != NULL ){ // se existe a lista
         if(li->qtd!=0){ // se ela já não estiver vazia
+            posi--;
             e = *((li->l)+posi); // o retorno vai receber a informação na posição
             int cont = posi;
             Tipo aux;
@@ -152,10 +160,19 @@ int main() {
 
     pushFront(li,1);
 
+    pushBack(li,4);
+
+    pushPosicao(li,3,3);
+    
+    Tipo aux = popPosicao(li,3);
+    printf("--%d--\n",aux);
+
     while(li->qtd != 0){
-        Tipo aux = popBack(li);
+        aux = popFront(li);
         printf("\n%d", aux);
     }
+
+
 
     return 0;
 }
