@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <limits.h>
 
-#define tam 1000000000
+#define tam 1000000
 
 void merge(int A[], int p, int q, int r){
     int n1 = q-p;
@@ -59,11 +59,12 @@ int main (){
 
     int A[tam];
     
-    mergeSort(A,0,tam);
+    
     
     for(int i=tam; i>0 ;i--){
         A[i]= i;
     }
 
+    mergeSort(A,0,tam);
     return 0;
 }
