@@ -1,3 +1,7 @@
+#ifndef LISTAENCADEADA_H
+#define LISTAENCADEADA_H
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -81,19 +85,74 @@ Elemento * popBack(LinkedList * lis){
   if(lis == NULL){puts("Lista nao existe");return NULL;}
   if(lis-> qntd == 0){puts("Lista vazia");return NULL;}
   
-  Elemento * aux, * i;
+  Elemento * aux = NULL, * i;
   // Se lista tiver só um elemento
-  if(lis -> qntd == 1){
+  if(lis -> primeiro -> proximo == NULL){   // se o primeiro da lista apontar para um null, ele é o único elelemento nela
     aux = lis -> primeiro;
-    lis -> qntd--;
-    return aux;
+    lis -> primeiro = NULL;
   } else { // Lista tem mais de um elemento
     // Ele vai procurar o penúltimo da lista
-    for (i = lis -> primeiro, aux = i -> proximo; aux -> proximo != NULL ; i = i -> proximo, aux = i -> proximo);
-    i -> proximo = NULL;    // Define o penúltimo como último
-    return aux;             // Retorna o antigo último
+    for (i = lis->primeiro; i -> proximo -> proximo != NULL ; i = i -> proximo);  // roda até o i ser o penúltimo
+    aux = i-> proximo;      // auxiliar recebe o último
+    i -> proximo = NULL;    // Define o penúltimo como último          
   }
+  lis -> qntd--;
+  return aux; 
+}
 
+
+void pushPosi(LinkedList *lis, Elemento * el, int val){
+  if(lis == NULL){puts("Lista nao existe");return;}
+  if(el == NULL){puts("Elemento dado não existe"); return;}
+
+  
+  // Caso esteja vazia
+  if(lis-> qntd == 0){
+    puts("Lista vazia! Elemento adicionado na primeira posicao");
+    pushInicio(lis, el);                                    // Adiciona no início
+  } else {
+    // Caso a posição não exista ainda
+    if(val > lis -> qntd){
+      puts("A lista nao possui esta posicao. Adicionando elemento no final");
+      pushBack(lis, el);
+    } else {
+      // Caso seja o primeiro elemento
+      if(val == 0){
+        pushInicio(lis, el);
+      } else {
+        // Caso normal
+        int i;
+        Elemento * aux, * ant;
+        for(i = 0, aux = lis -> primeiro; i != val; i++ ){    // Roda até a posição desejada 
+          ant = aux;                                      // Salva uma posição anterior
+          aux = aux -> proximo;                               // O aux recebe o sucessor
+        }
+        el -> proximo = aux;                                  // Elemento assume a posição
+        ant -> proximo = el;                                  // Aux aponta pro elemento
+      }
+    }
+      
+  }
+  lis -> qntd++;
+  return;
+}
+
+
+Elemento * popPosi(LinkedList *lis, int val){
+  if(lis == NULL){puts("Lista nao existe");return NULL;}
+  if(lis -> qntd == 0){puts("Lista vazia"); return NULL;}
+  if(lis -> qntd < val){puts("Essa posicao nao existe nesta lista"); return NULL;}
+
+  // Caso normal
+  int i;
+  Elemento * aux, * el;
+  for(i = 0, el = lis -> primeiro; i != val; i++){    // Roda até a posição desejada 
+    aux = el;                                         // Aux salva o anterior
+    el = el -> proximo;                               // O el recebe o sucessor
+  }
+  aux -> proximo = el -> proximo;
+  el -> proximo = NULL;
+  return el;
 }
 
 
@@ -111,10 +170,83 @@ void listar(LinkedList * lis){
 
 
 
+/*
 
+int menu();
 
+int main()
+{
+    int op = menu(), val, posi;
+    Elemento *novo;
+    LinkedList *l = criaLista();
+    while (op != 0)
+    {
+        switch (op)
+        {
+        case 1:
+            puts("Digite o valor a ser inserido: ");
+            scanf("%d", &val);
+            novo = criaElemento(val);
+            pushInicio(l, novo);
+            novo = NULL;
+            break;
 
-/*int main(){
+        case 2:
+            novo = popInicio(l);
+            printf("popado: %d\n", novo -> valor);
+            novo = NULL;
+            break;
+        case 3:
+            puts("Digite o valor a ser inserido: ");
+            scanf("%d", &val);
+            novo = criaElemento(val);
+            pushBack(l, novo);
+            novo = NULL;
+            break;
+        case 4:
+            novo = popBack(l);
+            printf("popado: %d\n", novo -> valor);
+            break;
+        case 5:
+            puts("Digite o valor a ser inserido: ");
+            scanf("%d", &val);
+            novo = criaElemento(val);
+            puts("Digite a posicao a ser inserido (considere 0 como a primeira posicao): ");
+            scanf("%d", &posi);
+            pushPosi(l,novo,posi);
+            puts("Valor inserido com sucesso!");
+            novo = NULL;
+            break;
+        case 6:
+            puts("Digite a posicao que deseja remover: ");
+            scanf("%d", &posi);
+            novo = popPosi(l,posi);
+            if(novo == NULL){puts("Nenhum valor foi removido");}
+            else{printf("O valor removido foi: %d\n", novo -> valor);}
+            break;
+        case 7:
+            listar(l);
+            break;
+        }
+        op = menu();
+    }
+    return 0;
+}
 
+int menu()
+{
+    puts("1 - Inserir");
+    puts("2 - tirar inicio");
+    puts("3 - Inserir Fim");
+    puts("4 - Tirar Fim");
+    puts("5 - Inserir Posicao");
+    puts("6 - Remover Posicao");
+    puts("7 - Listar");
+    puts("0 - Sair");
+    puts("Digite a opcao: ");
+    int op;
+    scanf("%d", &op);
+    return op;
+}
 
-}*/
+*/

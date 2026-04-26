@@ -6,7 +6,7 @@ int menu();
 
 int main()
 {
-    int op = menu(), val;
+    int op = menu(), val, posi;
     Elemento *novo;
     LinkedList *l = criaLista();
     while (op != 0)
@@ -38,6 +38,23 @@ int main()
             printf("popado: %d\n", novo -> valor);
             break;
         case 5:
+            puts("Digite o valor a ser inserido: ");
+            scanf("%d", &val);
+            novo = criaElemento(val);
+            puts("Digite a posicao a ser inserido (considere 0 como a primeira posicao): ");
+            scanf("%d", &posi);
+            pushPosi(l,novo,posi);
+            puts("Valor inserido com sucesso!");
+            novo = NULL;
+            break;
+        case 6:
+            puts("Digite a posicao que deseja remover: ");
+            scanf("%d", &posi);
+            novo = popPosi(l,posi);
+            if(novo == NULL){puts("Nenhum valor foi removido");}
+            else{printf("O valor removido foi: %d\n", novo -> valor);}
+            break;
+        case 7:
             listar(l);
             break;
         }
@@ -52,7 +69,9 @@ int menu()
     puts("2 - tirar inicio");
     puts("3 - Inserir Fim");
     puts("4 - Tirar Fim");
-    puts("5 - Listar");
+    puts("5 - Inserir Posicao");
+    puts("6 - Remover Posicao");
+    puts("7 - Listar");
     puts("0 - Sair");
     puts("Digite a opcao: ");
     int op;
