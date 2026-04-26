@@ -81,19 +81,19 @@ Elemento * popBack(LinkedList * lis){
   if(lis == NULL){puts("Lista nao existe");return NULL;}
   if(lis-> qntd == 0){puts("Lista vazia");return NULL;}
   
-  Elemento * aux, * i;
+  Elemento * aux = NULL, * i;
   // Se lista tiver só um elemento
-  if(lis -> qntd == 1){
+  if(lis -> primeiro -> proximo == NULL){   // se o primeiro da lista apontar para um null, ele é o único elelemento nela
     aux = lis -> primeiro;
-    lis -> qntd--;
-    return aux;
+    lis -> primeiro = NULL;
   } else { // Lista tem mais de um elemento
     // Ele vai procurar o penúltimo da lista
-    for (i = lis -> primeiro, aux = i -> proximo; aux -> proximo != NULL ; i = i -> proximo, aux = i -> proximo);
-    i -> proximo = NULL;   // Define o penúltimo como último
-    return aux;             // Retorna o antigo último
+    for (i = lis->primeiro; i -> proximo -> proximo != NULL ; i = i -> proximo);  // roda até o i ser o penúltimo
+    aux = i-> proximo;      // auxiliar recebe o último
+    i -> proximo = NULL;    // Define o penúltimo como último          
   }
-
+  lis -> qntd--;
+  return aux; 
 }
 
 
