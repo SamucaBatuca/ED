@@ -26,18 +26,15 @@ Deque * criaDeque(int tam){ // retorna um poteiro do tipo Fila
 }
 
 void pushBackE(Deque *deq, Tipo * val){
-    if (deq!= NULL){ // ve se a Fila existe
-        if (deq -> tamanho == deq -> qtd){ // se o tamanho da Filha não estourou
+    if (deq!= NULL){ 
+        if (deq -> tamanho == deq -> qtd){ 
             puts ("Fila cheia");
             return;
         }
-        deq -> back++; // o fim da fila anda
+        deq -> back++;
         deq->d[deq -> back] = val;
-        /* Isso significa: aponte para o ponteiro do slot de variáveis da
-            Fila somado ao fim (ou seja, aponta pro fim) e insira nele
-            uma variável do tipo anteriormente definido 
-        */
-        deq -> qtd++; // adiciona mais um à quantidade
+        
+        deq -> qtd++; 
     }
     return;
 }
