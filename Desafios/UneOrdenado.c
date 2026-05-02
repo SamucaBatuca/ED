@@ -81,7 +81,6 @@ int main(){
         j += 2;  
     }
 
-    printf("\n%d\n\n", l1 -> primeiro -> valor);
 
     j=1;
 
