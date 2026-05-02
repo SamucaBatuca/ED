@@ -61,9 +61,9 @@ int main(){
         e = NULL;  
     }
 
-    printf("Em uma lista de %d elementos, selecione o ponto inicial da inversão:\n", j);
+    printf("Em uma lista de %d elementos, selecione o ponto inicial da inversao:\n", j);
     scanf("%d", &s);
-    printf("Em uma lista de %d elementos, selecione o ponto final da inversão:\n", j);
+    printf("Em uma lista de %d elementos, selecione o ponto final da inversao:\n", j);
     scanf("%d", &f);
     while(f > l1-> qntd || s> f){
         printf("Valores incorretos! \nPor gentileza, coloque os respectivos valores de incio e fim coerentes para uma lista de %d elementos!\n", j);
