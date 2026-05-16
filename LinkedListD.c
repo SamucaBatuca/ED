@@ -26,7 +26,7 @@ Elemento *criaElementoD(int val){
 }
 
 
-LinkedListD *criaLinkedListD(){
+LinkedListD *criaListaD(){
     LinkedListD *lis = (LinkedListD*)malloc(sizeof(LinkedListD));
     lis->primeiro = NULL;
     lis->ultimo = NULL;
@@ -73,7 +73,7 @@ Elemento *popInicioD(LinkedListD *lis){
 }
 
 
-void pushFinalD(LinkedListD *lis, Elemento *el){
+void pushBackD(LinkedListD *lis, Elemento *el){
     if (lis == NULL || el == NULL){puts("Lista ou Elemento nulo(s)"); return;}
     
     if (lis->qtde == 0){
@@ -89,7 +89,7 @@ void pushFinalD(LinkedListD *lis, Elemento *el){
 
 }
 
-Elemento *popFinalD(LinkedListD *lis){
+Elemento *popBackD(LinkedListD *lis){
     if (lis == NULL){puts("Lista nula"); return NULL;}
     if (lis->qtde == 0){puts("Lista Vazia");return NULL;}
     
@@ -138,6 +138,7 @@ void pushPosiD(LinkedListD *lis, Elemento * el, int val){
         aux -> anterior -> proximo = el;                      // O anterior de aux aponta pro elemento
         el -> anterior = aux -> anterior;                     // Elemento tem o anterior ajustado  
         el -> proximo = aux;                                  // Elemento assume a posição
+        aux -> anterior = el;
       }
     }
       
@@ -198,7 +199,7 @@ int main()
 {
     int op = menu(), val, posi;
     Elemento *novo;
-    LinkedListD *l = criaLista();
+    LinkedListD *l = criaListaD();
     while (op != 0)
     {
         switch (op)
