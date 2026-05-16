@@ -5,140 +5,132 @@
 #include <stdio.h>
 typedef struct elemento
 {
-    int num;
+    int valor;
     struct elemento *proximo;
     struct elemento *anterior;
 } Elemento;
 
-typedef struct listaDuplamenteLigada
+typedef struct LinkedListD
 {
     Elemento *primeiro;
     Elemento *ultimo;
     int qtde;
-} ListaDuplamenteLigada;
+} LinkedListD;
 // Primeiro da lista = Seu anterior = NULL
 // Último da lista = Seu próximo = NULL
 
-Elemento *criarElemento(int n)
-{
-    Elemento *e = (Elemento *)malloc(sizeof(Elemento));
-    e->num = n;
-    e->proximo = NULL;
-    e->anterior = NULL;
-    return e;
+
+Elemento *criarElemento(int val){
+    Elemento *el = (Elemento *)malloc(sizeof(Elemento));
+    el->valor = val;
+    el->proximo = NULL;
+    el->anterior = NULL;
+    return el;
 }
 
-ListaDuplamenteLigada *criarListaDuplamenteLigada()
-{
-    ListaDuplamenteLigada *l = (ListaDuplamenteLigada *)malloc(sizeof(ListaDuplamenteLigada));
-    l->primeiro = NULL;
-    l->ultimo = NULL;
-    l->qtde = 0;
-    return l;
+
+LinkedListD *criarLinkedListD(){
+    LinkedListD *lis = (LinkedListD*)malloc(sizeof(LinkedListD));
+    lis->primeiro = NULL;
+    lis->ultimo = NULL;
+    lis->qtde = 0;
+    return lis;
 }
 
-void inserirInicio(ListaDuplamenteLigada *l, Elemento *novo)
-{
-    if (l == NULL || novo == NULL)
-    {
-        puts("Lista ou Elemento nulo(s)");
-    }
-    else
-    {
-        if (l->qtde == 0)
-        { // Lista vazia
-            l->primeiro = novo;
-            l->ultimo = novo;
+
+void pushInicioD(LinkedListD *lis, Elemento *el){
+    if (lis == NULL || el == NULL){puts("Lista ou Elemento nulo(s)"); return;}
+    
+    if (lis->qtde == 0){                        // Lista vazia
+            lis->primeiro = el;
+            lis->ultimo = el;
         }
-        else
-        {                                 // Lista com elemento
-            novo->proximo = l->primeiro;  // ligamos novo à lista (primeiro)
-            l->primeiro->anterior = novo; // ligamos o primeiro (lista) ao novo
-            l->primeiro = novo;           // modificamos o primeiro (lista) para ser o novo
+        else{                                   // Lista com elemento
+            el->proximo = lis->primeiro;        // ligamos el à lista (primeiro)
+            lis->primeiro->anterior = el;       // ligamos o primeiro (lista) ao el
+            lis->primeiro = el;                 // modificamos o primeiro (lista) para ser o el
         }
-        l->qtde++;
-    }
+        lis->qtde++;
+    return;
 }
 
-Elemento *removerElementoInicio(ListaDuplamenteLigada *l)
-{
+
+Elemento *popInicioD(LinkedListD *lis){
     Elemento *aux = NULL;
-    if (l == NULL)
-    {
-        puts("Lista Vazia");
+    if (lis == NULL){puts("Lista nula"); return NULL;}
+    if (lis->qtde == 0){puts("Lista Vazia"); return NULL;}
+    
+    aux = lis->primeiro;
+    if (lis->qtde == 1){
+        lis->primeiro = NULL;
+        lis->ultimo = NULL;
     }
-    else
-    {
-        aux = l->primeiro;
-        if (l->qtde == 1)
-        {
-            l->primeiro = NULL;
-            l->ultimo = NULL;
-        }
-        else
-        {
-            l->primeiro = l->primeiro->proximo; // Primeiro passa a ser o segundo
-            l->primeiro->anterior = NULL;       // Deligo a lista do aux
-            aux->proximo = NULL;                // Desligo o aux da lista
-        }
-        l->qtde--;
+    else{
+        lis->primeiro = lis->primeiro->proximo;     // Primeiro passa a ser o segundo
+        lis->primeiro->anterior = NULL;             // Deligo a lista do aux
+        aux->proximo = NULL;                        // Desligo o aux da lista
     }
+    lis->qtde--;
+    
     return aux;
 }
 
-void inserirNoFinal(ListaDuplamenteLigada *l, Elemento *novo)
-{
-    if (l == NULL || novo == NULL)
-    {
-        puts("Lista ou Elemento nulo(s)");
+
+void pushFinalD(LinkedListD *lis, Elemento *el){
+    if (lis == NULL || el == NULL){puts("Lista ou Elemento nulo(s)"); return;}
+    
+    if (lis->qtde == 0){
+        lis->primeiro = el;
+        lis->ultimo = el;
     }
-    else
-    {
-        if (l->qtde == 0)
-        {
-            l->primeiro = novo;
-            l->ultimo = novo;
-        }
-        else
-        {
-            l->ultimo->proximo = novo;  // Liga a lista no novo
-            novo->anterior = l->ultimo; // Liga o novo na lista
-            l->ultimo = novo;           // Altera o último da lista para o novo
-        }
-        l->qtde++;
+    else{
+        lis->ultimo->proximo = el;      // Liga a lista no el
+        el->anterior = lis->ultimo;     // Liga o el na lista
+        lis->ultimo = el;               // Altera o último da lista para o el
     }
+    lis->qtde++;
+
 }
 
-Elemento *retirarDoFinal(ListaDuplamenteLigada *l)
-{
-    Elemento *aux = NULL;
-    if (l == NULL)
-    {
-        puts("Lista nula");
+Elemento *popFinalD(LinkedListD *lis){
+    if (lis == NULL){puts("Lista nula"); return NULL;}
+    if (lis->qtde == 0){puts("Lista Vazia");return NULL;}
+    
+    
+    Elemento *aux = lis->ultimo;
+    if (lis->qtde == 1){
+        lis->ultimo = NULL;
+        lis->primeiro = NULL;
+    } else{
+        lis->ultimo = lis->ultimo->anterior; // O penúltimo passa a ser o último da lista
+        lis->ultimo->proximo = NULL;       // Desliga a lista do aux
+        aux->anterior = NULL;            // Desliga o aux da lista
     }
-    else
-    {
-        if (l->qtde == 0)
-        {
-            puts("Lista Vazia");
-        }
-        else
-        {
-            aux = l->ultimo;
-            if (l->qtde == 1)
-            {
-                l->ultimo = NULL;
-                l->primeiro = NULL;
-            }
-            else
-            {
-                l->ultimo = l->ultimo->anterior; // O penúltimo passa a ser o último da lista
-                l->ultimo->proximo = NULL;       // Desliga a lista do aux
-                aux->anterior = NULL;            // Desliga o aux da lista
-            }
-            l->qtde--;
-        }
-    }
+    
+    lis->qtde--;
+    
     return aux;
 }
+
+
+void pushPosiD(){}
+
+
+
+
+void listarD(LinkedListD * lis){
+  if(lis == NULL){puts("Lista nao existe");return;}
+  if(lis->qtde == 0){puts("Lista vazia");return;}
+
+  Elemento * i;
+  for (i = lis -> primeiro; i != NULL; i = i -> proximo){
+    printf("%d - ", i-> valor);
+  }
+  printf("NULL\n");
+
+}
+
+
+
+
 #endif
