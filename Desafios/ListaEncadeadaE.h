@@ -124,7 +124,7 @@ void pushPosiE(LinkedListE *lis, ElementoE * el, int val){
         int i;
         ElementoE * aux, * ant;
         for(i = 0, aux = lis -> primeiro; i != val; i++ ){    // Roda até a posição desejada 
-          ant = aux;                                      // Salva uma posição anterior
+          ant = aux;                                          // Salva uma posição anterior
           aux = aux -> proximo;                               // O aux recebe o sucessor
         }
         el -> proximo = aux;                                  // Elemento assume a posição
