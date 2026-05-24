@@ -1,5 +1,4 @@
 #include "LinkedListDC.h"
-#include "DequeDE.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -29,11 +28,15 @@ void cache_put(LFU_cache* cache, int valor){
     
     ElementoC * el = criaElementoC(valor);          // Cria um elemento
     el -> vis++;                                    // Aumenta a recorrencia
+    ElementoC * aux = criaElementoC(valor);         // Cria o elemento da recorrencia
+    
+    
 
     // Se a lista estiver cheia
     if(cache -> qntd == cache->tam){
         ElementoC * ref = popBackD(cache->LRU);     // Pega a menor ocorrencia
-        ElementoC * aux;
+        
+        
         // Percorre a lista até achar o menos ocorrente
         for(aux = cache -> LFU -> primeiro; aux != ref; aux = aux->proximo);
 
@@ -44,15 +47,35 @@ void cache_put(LFU_cache* cache, int valor){
             aux -> proximo -> anterior = el;
         }
 
+        
         pushInicioD(cache->LRU, el);
-
+        
         // Desliga o elemento de menor ocorrência
-        aux = NULL;
+        //aux = NULL;
 
     // Caso normal
     } else {
-        pushInicioD(cache -> LFU, el);               // Da push nele no cache
-        pushInicioD(cache -> LRU, el);               // Da push na ocorrência
+        pushBackD(cache -> LFU, el);                 // Da push nele no cache
+        pushInicioD(cache -> LRU, aux);               // Da push na ocorrência
+
+
+        /*//printf("\n%d\n", cache->LFU->primeiro->valor);
+        ElementoC * i;
+        for (i = cache->LFU->primeiro; i != NULL; i = i -> proximo){
+            printf("%d - ", i-> valor);
+        }
+        printf("NULL\n");
+        
+        
+
+        
+        for (i = cache->LRU->primeiro; i != NULL; i = i -> proximo){
+            printf("%d - ", i-> valor);
+            
+        }
+        printf("NULL\n");*/
+
+        cache -> qntd++;
     }
 
 }
@@ -101,7 +124,16 @@ int main()
 {
     LFU_cache * cache = criaCache(4);
     cache_put(cache, 4);
+    cache_put(cache, 3);
+    cache_put(cache, 2);
+    cache_put(cache, 1);
+    //cache_get(cache, 3);
+    //cache_get(cache, 4);
+    //cache_get(cache, 4);
+    //cache_put(cache, 5);
+    
     listarD(cache->LFU);
+    listarD(cache->LRU);
 
 }
 

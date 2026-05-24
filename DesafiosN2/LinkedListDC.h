@@ -25,6 +25,7 @@ ElementoC *criaElementoC(int val){
     el->valor = val;
     el->proximo = NULL;
     el->anterior = NULL;
+    el->vis = 0;
     return el;
 }
 
